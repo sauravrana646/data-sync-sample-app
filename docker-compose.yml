@@ -1,0 +1,29 @@
+services:
+  redis:
+    image: redis:7.4-alpine
+    ports:
+      - "6379:6379"
+    env_file:
+      - .env
+    # $$ → $ inside container so requirepass reads REDIS_PASSWORD from env_file
+    command: ["sh", "-c", "redis-server --requirepass \"$$REDIS_PASSWORD\""]
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a \"$$REDIS_PASSWORD\" ping | grep -q PONG"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  data-sync:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: data-sync:0.1.0
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      REDIS_HOST: redis
+    depends_on:
+      redis:
+        condition: service_healthy
