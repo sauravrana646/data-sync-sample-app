@@ -31,7 +31,7 @@ Copy `.env.example` → `.env` (gitignored). `python-dotenv` loads `.env` for lo
 Best for laptop smoke tests without a VM.
 
 ```bash
-cd task-0-sample-app
+cd data-sync-sample-app
 cp .env.example .env   # set REDIS_PASSWORD
 docker compose up --build
 
@@ -71,8 +71,8 @@ On a cloud VM, open port **8080** (or front with a load balancer) only as needed
 sudo mkdir -p /srv/data-sync
 sudo chown "$USER":"$USER" /srv/data-sync
 
-# Copy this task folder contents into /srv/data-sync (or git clone your repo and cd into task-0-sample-app)
-cp -a task-0-sample-app/. /srv/data-sync/
+# Copy this repo into /srv/data-sync (or git clone and use the repo root)
+cp -a data-sync-sample-app/. /srv/data-sync/
 cd /srv/data-sync
 
 cp .env.example .env
